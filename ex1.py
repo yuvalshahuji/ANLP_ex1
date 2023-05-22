@@ -39,6 +39,10 @@ class ModelManager:
         self.train_time = 0
 
     def train(self):
+        """
+        train model with different seeds and save the trainer with the best accuracy
+        :return:
+        """
         metrics = np.zeros(self._seeds_num)
         for i in range(self._seeds_num):
             # wandb.init(project=WANDB_PROJECT, name=f'{self.model_name}_{i}')
@@ -61,6 +65,9 @@ class ModelManager:
         self.std_acc = metrics.std()
 
     def predict(self, filepath=PREDICTIONS_FILE):
+        """
+        write predictions to file and return prediction time
+        """
         self._trainer.args.set_testing(batch_size=1)
         self._trainer.model.eval()
         predict_output = self._trainer.predict(self._test_dataset)
