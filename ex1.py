@@ -1,6 +1,6 @@
 import sys
 import torch
-import wandb
+# import wandb
 from datasets import load_dataset
 from transformers import AutoModelForSequenceClassification, AutoConfig, AutoTokenizer, Trainer, TrainingArguments, \
     set_seed
@@ -11,7 +11,7 @@ MODELS = ['bert-base-uncased', 'roberta-base', 'google/electra-base-generator']
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 PREDICTIONS_FILE = 'predictions.txt'
 RESULTS_FILE = 'res.txt'
-WANDB_PROJECT = 'anlp_ex1'
+# WANDB_PROJECT = 'anlp_ex1'
 TRAINING_OUTPUT = "training"
 
 
@@ -41,7 +41,7 @@ class ModelManager:
     def train(self):
         metrics = np.zeros(self._seeds_num)
         for i in range(self._seeds_num):
-            wandb.init(project=WANDB_PROJECT, name=f'{self.model_name}_{i}')
+            # wandb.init(project=WANDB_PROJECT, name=f'{self.model_name}_{i}')
             set_seed(i)
             model = AutoModelForSequenceClassification.from_pretrained(self.model_name, config=self._config).to(DEVICE)
             trainer = Trainer(
@@ -92,7 +92,7 @@ def write_results(models, prediction_time, filepath=RESULTS_FILE):
 
 
 def main(seeds_num, training_samples, validation_samples, prediction_samples):
-    wandb.login()
+    # wandb.login()
     models = dict()
     best_model = None
     for model_name in MODELS:
@@ -104,7 +104,7 @@ def main(seeds_num, training_samples, validation_samples, prediction_samples):
 
     prediction_time = best_model.predict()
     write_results(models, prediction_time)
-    wandb.finish()
+    # wandb.finish()
 
 
 if __name__ == '__main__':
